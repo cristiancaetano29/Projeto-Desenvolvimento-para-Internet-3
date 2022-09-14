@@ -1,17 +1,63 @@
 import React, { Component } from "react";
 import './CrudAluno.css';
 import Main from "../template/main/Main";
+import axios from "axios";
 
 const title = "Cadastro de Alunos";
 
-const Alunos = [
-    { 'id': 1, 'ra': 11111, 'nome': 'André', 'codCurso': 19 },
-    { 'id': 2, 'ra': 22222, 'nome': 'Amanda', 'codCurso': 28 },
-    { 'id': 3, 'ra': 33333, 'nome': 'Pedro', 'codCurso': 39 },
-    { 'id': 4, 'ra': 44444, 'nome': 'Alice', 'codCurso': 59 },
-];
+const urlAPI = "http://localhost:5035/api/controller"
+const initialState = {
+    aluno: { id: 0, ra: '', nome: '', codCurso: 0 },
+    lista: [],
+}
 
 class CrudAluno extends Component {
+
+    state = { ...initialState }
+
+    componentDidMount() {
+        axios(urlAPI).then(resp => {
+            this.setState({ lista: resp.data })
+        })
+    }
+
+    // componentDidMount() {
+    //     axios(urlAPI).then(resp => {
+    //         this.setState({ lista: resp.data })
+    //     })
+    //     fetch(urlAPI)
+    //     .then(resp => {resp.json()})
+    //     .then(resposta => {console.log(resposta)})
+    // }
+
+    limpar() {
+        this.setState({ aluno: initialState.aluno })
+    }
+
+    salvar() {
+        const aluno = this.state.aluno;
+        aluno.codCurso = Number(aluno.codCurso);
+        const metodo = 'post';
+
+        axios[metodo](urlAPI, aluno)
+            .then(resp => {
+                const lista = this.getListaAtualizada(resp.data)
+                this.setState({ aluno: initialState.aluno, lista })
+            });
+    }
+
+    getListaAtualizada(aluno) {
+        const lista = this.state.lista.filter(a => a.id !== aluno.id);
+        lista.unshift(aluno);
+        return lista;
+    }
+
+    atualizaCampo(evento) {
+        const aluno = { ...this.state.aluno };
+        aluno[event.target.name] = event.target.value
+        this.setState({ aluno })
+    }
+
     renderTable() {
         return (
             <div className="listagem">
@@ -25,13 +71,14 @@ class CrudAluno extends Component {
                     </thead>
 
                     <tbody>
-                        {Alunos.map(aluno => (
+                        {this.state.lista.map(
+                            (aluno) =>
                             <tr key={aluno.id}>
                                 <td>{aluno.ra}</td>
                                 <td>{aluno.nome}</td>
                                 <td>{aluno.codCurso}</td>
                             </tr>
-                        ))}
+                        )}
                     </tbody>
                 </table>
             </div>

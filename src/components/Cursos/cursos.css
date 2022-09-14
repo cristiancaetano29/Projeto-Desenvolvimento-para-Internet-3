@@ -1,5 +1,7 @@
-div.content{
-    width: 80%;
+
+
+div.title{
+    width: 300px;
     height: 80%;
     margin: auto;
     display: flex;
@@ -8,7 +10,7 @@ div.content{
     align-items: center;
 }
 
-main > div {
+div.conteudo {
     background-color: #fff;
     box-shadow: 0px 0px 15px #0004;
     padding: 20px;
