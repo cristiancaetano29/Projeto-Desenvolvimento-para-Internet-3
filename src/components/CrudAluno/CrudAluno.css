@@ -20,7 +20,7 @@ td {
 }
 
 .tabTituloRa {
-    width: 100px;
+    width: 10px;
 }
 
 .tabTituloNome {
@@ -92,4 +92,18 @@ label {
 
 label {
     padding: 10px;
+}
+
+.btn-alterar{
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Silkscreen', cursive;
+    border-radius: 8px;
+}
+
+.btn-remover{
+    padding: 10px;
+    cursor: pointer;
+    font-family: 'Silkscreen', cursive;
+    border-radius: 8px;
 }

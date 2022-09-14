@@ -37,18 +37,20 @@ class CrudAluno extends Component {
     salvar() {
         const aluno = this.state.aluno;
         aluno.codCurso = Number(aluno.codCurso);
-        const metodo = 'post';
+        const metodo = aluno.id ? 'put' : 'post';
+        const url = aluno.id ? `${urlAPI}/${aluno.id}` : urlAPI
 
         axios[metodo](urlAPI, aluno)
             .then(resp => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({ aluno: initialState.aluno, lista })
             });
+            this.atualizaCampo(aluno)
     }
 
-    getListaAtualizada(aluno) {
+    getListaAtualizada(aluno, add = true) {
         const lista = this.state.lista.filter(a => a.id !== aluno.id);
-        lista.unshift(aluno);
+        if(add) lista.unshift(aluno);
         return lista;
     }
 
@@ -56,6 +58,23 @@ class CrudAluno extends Component {
         const aluno = { ...this.state.aluno };
         aluno[evento.target.name] = evento.target.value
         this.setState({ aluno })
+    }
+
+    carregar(aluno) {
+        this.setState({ aluno })
+    }
+
+    remover(aluno) {
+        const url = urlAPI + "/" + aluno.id;
+        if(window.confirm("Confirma remoção do aluno: " + aluno.ra)){
+            console.log("entrou no confirme da tela")
+
+            axios['delete'](url, aluno)
+                .then(resp => {
+                    const lista = this.getListaAtualizada(aluno, false)
+                    this.setState({ aluno: initialState.aluno, lista })
+                })
+        }
     }
 
     renderForm() {
@@ -117,6 +136,8 @@ renderTable() {
                         <th className='tabTituloRa'>Ra</th>
                         <th className='tabTituloNome'>Nome</th>
                         <th className='tabTituloCurso'>Curso</th>
+                        <th>Alterar</th>
+                        <th>Remover</th>
                     </tr>
                 </thead>
 
@@ -127,6 +148,16 @@ renderTable() {
                                 <td>{aluno.ra}</td>
                                 <td>{aluno.nome}</td>
                                 <td>{aluno.codCurso}</td>
+                                <td>
+                                    <button onClick={() => this.carregar(aluno)} className='btn-alterar'>
+                                        Alterar
+                                    </button>
+                                </td>
+                                <td>
+                                    <button onClick={() => this.remover(aluno)} className='btn-remover'>
+                                        Remover
+                                    </button>
+                                </td>
                             </tr>
                     )}
                 </tbody>
@@ -138,8 +169,8 @@ renderTable() {
 render() {
     return (
         <Main title={title}>
-            {this.renderTable()}
             {this.renderForm()}
+            {this.renderTable()}       
         </Main>
     )
 }
