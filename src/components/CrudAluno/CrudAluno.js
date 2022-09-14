@@ -54,44 +54,95 @@ class CrudAluno extends Component {
 
     atualizaCampo(evento) {
         const aluno = { ...this.state.aluno };
-        aluno[event.target.name] = event.target.value
+        aluno[evento.target.name] = evento.target.value
         this.setState({ aluno })
     }
 
-    renderTable() {
+    renderForm() {
         return (
-            <div className="listagem">
-                <table className="listaAlunos" id="tblListaAlunos">
-                    <thead className='cabecTabela'>
-                        <tr className="cabecTabela">
-                            <th className='tabTituloRa'>Ra</th>
-                            <th className='tabTituloNome'>Nome</th>
-                            <th className='tabTituloCurso'>Curso</th>
-                        </tr>
-                    </thead>
+            <div className="inclui-container">
+                <label> RA: </label>
+                <input
+                    type="text"
+                    id="ra"
+                    placeholder="RA do aluno"
+                    className="form-input"
+                    name="ra"
 
-                    <tbody>
-                        {this.state.lista.map(
-                            (aluno) =>
+                    value={this.state.aluno.ra}
+
+                    onChange={e => this.atualizaCampo(e)}
+                />
+                <label> Nome: </label>
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Nome do aluno"
+                    className="form-input"
+                    name="nome"
+
+                    value={this.state.aluno.nome}
+
+                    onChange={e => this.atualizaCampo(e)}
+                />
+                <label> Código do Curso: </label>
+                <input
+                    type="number"
+                    id="codCurso"
+                    placeholder="0"
+                    className="form-input"
+                    name="codCurso"
+
+                    value={this.state.aluno.codCurso}
+                    onChange={e => this.atualizaCampo(e)}
+                />
+                <button className="btnSalvar"
+                    onClick={e => this.salvar(e)} >
+                    Salvar
+                </button>
+                <button className="btnCancelar"
+                    onClick={e => this.limpar(e)} >
+                    Cancelar
+                </button>
+            </div>
+        )
+    }
+
+renderTable() {
+    return (
+        <div className="listagem">
+            <table className="listaAlunos" id="tblListaAlunos">
+                <thead className='cabecTabela'>
+                    <tr className="cabecTabela">
+                        <th className='tabTituloRa'>Ra</th>
+                        <th className='tabTituloNome'>Nome</th>
+                        <th className='tabTituloCurso'>Curso</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {this.state.lista.map(
+                        (aluno) =>
                             <tr key={aluno.id}>
                                 <td>{aluno.ra}</td>
                                 <td>{aluno.nome}</td>
                                 <td>{aluno.codCurso}</td>
                             </tr>
-                        )}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
+                    )}
+                </tbody>
+            </table>
+        </div>
+    )
+}
 
-    render() {
-        return(
-            <Main title={title}>
-                {this.renderTable()}
-            </Main>
-        )
-    }
+render() {
+    return (
+        <Main title={title}>
+            {this.renderTable()}
+            {this.renderForm()}
+        </Main>
+    )
+}
 }
 
 export default CrudAluno;
