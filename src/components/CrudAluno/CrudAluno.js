@@ -11,7 +11,7 @@ const initialState = {
     lista: [],
 }
 
-class CrudAluno extends Component {
+export default class CrudAluno extends Component {
 
     state = { ...initialState }
 
@@ -20,15 +20,6 @@ class CrudAluno extends Component {
             this.setState({ lista: resp.data })
         })
     }
-
-    // componentDidMount() {
-    //     axios(urlAPI).then(resp => {
-    //         this.setState({ lista: resp.data })
-    //     })
-    //     fetch(urlAPI)
-    //     .then(resp => {resp.json()})
-    //     .then(resposta => {console.log(resposta)})
-    // }
 
     limpar() {
         this.setState({ aluno: initialState.aluno })
@@ -40,17 +31,17 @@ class CrudAluno extends Component {
         const metodo = aluno.id ? 'put' : 'post';
         const url = aluno.id ? `${urlAPI}/${aluno.id}` : urlAPI
 
-        axios[metodo](urlAPI, aluno)
+        axios[metodo](url, aluno)
             .then(resp => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({ aluno: initialState.aluno, lista })
             });
-            this.atualizaCampo(aluno)
+
     }
 
     getListaAtualizada(aluno, add = true) {
         const lista = this.state.lista.filter(a => a.id !== aluno.id);
-        if(add) lista.unshift(aluno);
+        if (add) lista.unshift(aluno);
         return lista;
     }
 
@@ -62,11 +53,20 @@ class CrudAluno extends Component {
 
     carregar(aluno) {
         this.setState({ aluno })
+        const url = urlAPI + "/" + aluno.id;
+        if (window.confirm("Confirma edição do aluno: " + aluno.ra)) {
+            console.log("entrou no confirm");
+            axios['PUT'](url, aluno).then(resp => {
+                const lista = this.getListaAtualizada(aluno, false);
+                this.setState({ aluno: initialState.aluno, lista });
+            });
+        }
+        this.atualizaCampo(aluno);
     }
 
     remover(aluno) {
         const url = urlAPI + "/" + aluno.id;
-        if(window.confirm("Confirma remoção do aluno: " + aluno.ra)){
+        if (window.confirm("Confirma remoção do aluno: " + aluno.ra)) {
             console.log("entrou no confirme da tela")
 
             axios['delete'](url, aluno)
@@ -127,53 +127,51 @@ class CrudAluno extends Component {
         )
     }
 
-renderTable() {
-    return (
-        <div className="listagem">
-            <table className="listaAlunos" id="tblListaAlunos">
-                <thead className='cabecTabela'>
-                    <tr className="cabecTabela">
-                        <th className='tabTituloRa'>Ra</th>
-                        <th className='tabTituloNome'>Nome</th>
-                        <th className='tabTituloCurso'>Curso</th>
-                        <th>Alterar</th>
-                        <th>Remover</th>
-                    </tr>
-                </thead>
+    renderTable() {
+        return (
+            <div className="listagem">
+                <table className="listaAlunos" id="tblListaAlunos">
+                    <thead className='cabecTabela'>
+                        <tr className="cabecTabela">
+                            <th className='tabTituloRa'>Ra</th>
+                            <th className='tabTituloNome'>Nome</th>
+                            <th className='tabTituloCurso'>Curso</th>
+                            <th>Alterar</th>
+                            <th>Remover</th>
+                        </tr>
+                    </thead>
 
-                <tbody>
-                    {this.state.lista.map(
-                        (aluno) =>
-                            <tr key={aluno.id}>
-                                <td>{aluno.ra}</td>
-                                <td>{aluno.nome}</td>
-                                <td>{aluno.codCurso}</td>
-                                <td>
-                                    <button onClick={() => this.carregar(aluno)} className='btn-alterar'>
-                                        Alterar
-                                    </button>
-                                </td>
-                                <td>
-                                    <button onClick={() => this.remover(aluno)} className='btn-remover'>
-                                        Remover
-                                    </button>
-                                </td>
-                            </tr>
-                    )}
-                </tbody>
-            </table>
-        </div>
-    )
-}
+                    <tbody>
+                        {this.state.lista.map(
+                            (aluno) =>
+                                <tr key={aluno.id}>
+                                    <td>{aluno.ra}</td>
+                                    <td>{aluno.nome}</td>
+                                    <td>{aluno.codCurso}</td>
+                                    <td>
+                                        <button onClick={() => this.carregar(aluno)} className='btn-alterar'>
+                                            Alterar
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button onClick={() => this.remover(aluno)} className='btn-remover'>
+                                            Remover
+                                        </button>
+                                    </td>
+                                </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        )
+    }
 
-render() {
-    return (
-        <Main title={title}>
-            {this.renderForm()}
-            {this.renderTable()}       
-        </Main>
-    )
+    render() {
+        return (
+            <Main title={title}>
+                {this.renderForm()}
+                {this.renderTable()}
+            </Main>
+        )
+    }
 }
-}
-
-export default CrudAluno;
