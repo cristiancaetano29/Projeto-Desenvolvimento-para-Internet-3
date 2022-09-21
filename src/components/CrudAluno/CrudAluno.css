@@ -36,14 +36,21 @@ input[type=text] {
 
 input[type=number] {
     padding: 12px;
-    width: 50px;
+    width: 75px;
+    text-align: center;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .inclui-container {
     margin: 20px;
     border-radius: 5px;
     background-color: #f2f2f2;
-    padding: 20px;
+    padding: 30px;
 }
 
 .btnSalvar {
@@ -99,6 +106,10 @@ label {
     cursor: pointer;
     font-family: 'Silkscreen', cursive;
     border-radius: 8px;
+    background-color: rgb(63, 118, 229);
+    color: white;
+    transition: 0.3s ease-in;
+    animation: rotate 2s linear;
 }
 
 .btn-remover{
@@ -106,4 +117,6 @@ label {
     cursor: pointer;
     font-family: 'Silkscreen', cursive;
     border-radius: 8px;
+    background-color: red;
+    color: white;
 }

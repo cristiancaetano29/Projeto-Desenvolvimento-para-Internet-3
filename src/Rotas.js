@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route,  } from "react-router-dom";
 import Main from "./components/template/main/Main";
 import CrudAluno from "./components/CrudAluno/CrudAluno";
-import Cursos from "./components/Cursos/cursos";
+import Cursos from "./components/Cursos/Cursos";
 
 
 const Rotas = () => {
