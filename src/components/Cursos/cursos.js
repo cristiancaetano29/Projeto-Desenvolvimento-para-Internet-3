@@ -56,12 +56,10 @@ const Cursos = () => {
         cursoData.codCurso = Number(dadosCurso.codCurso)
         const metodo = cursoData.id ? 'put' : 'post'
         const url = cursoData.id ? `${urlAPI}/${dadosCurso.id}` : urlAPI
-        console.log(dadosCurso)
 
         axios[metodo](url, dadosCurso)
         .then(resp => {
             let lista = listaAtualizada(resp.data)
-            //let lista = resp.data
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
             setLista1(lista)
         })
@@ -70,8 +68,36 @@ const Cursos = () => {
         })
     }
 
-    const deletarAluno = async () => {
+    /*
+    
+    remover(aluno) {
+        const url = urlAPI + "/" + aluno.id;
+        if (window.confirm("Confirma remoção do aluno: " + aluno.ra)) {
+            console.log("entrou no confirme da tela")
 
+            axios['delete'](url, aluno)
+                .then(resp => {
+                    const lista = this.getListaAtualizada(aluno, false)
+                    this.setState({ aluno: initialState.aluno, lista })
+                })
+        }
+    }
+    
+    */
+
+    const deletarCurso = async (curso) => {
+        const url = urlAPI + "/" + curso.id
+        if(window.confirm("Deseja deletar o Curso: " + curso.codCurso)){
+            axios['delete'](url, curso)
+            .then(resp => {
+                let lista = listaAtualizada(resp.data)
+                cursoData({ dadosCurso: cursoData.dadosCurso, lista})
+                setLista1(lista)
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
     }
 
     const alterarAluno = async () => {
