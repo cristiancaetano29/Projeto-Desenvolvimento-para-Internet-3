@@ -13,23 +13,20 @@ const Cursos = () => {
     const [lista1, setLista1] = useState({
         id: 0,
         codCurso: '',
-        curso: '',
-        periodo: ''
+        nomeCurso: '',
+        periodo: '',
     })
     const [cursoData, setCursoData] = useState({
         id: 0,
         codCurso: '',
-        curso: '',
-        periodo: ''
+        nomeCurso: '',
+        periodo: '',
     })
-
-    //aluno: { id: 0, ra: '', nome: '', codCurso: 0 },
 
     const dataFromAPI = async () => {
         await axios(urlAPI)
             .then(resp => {
                 setData(resp.data)
-                //console.log(data)
             })
             .catch(error => {
                 console.error(error)
@@ -48,56 +45,30 @@ const Cursos = () => {
         console.log(cursoData)
     }
 
+    function listaAtualizada(curso, add = true){
+        const lista = lista1.filter(a => a.id != curso.id)
+        if(add) lista.unshift(curso)
+        return lista
+    }
+
     const adicioanrAluno = async () => {
         const dadosCurso = cursoData
         cursoData.codCurso = Number(dadosCurso.codCurso)
         const metodo = cursoData.id ? 'put' : 'post'
         const url = cursoData.id ? `${urlAPI}/${dadosCurso.id}` : urlAPI
+        console.log(dadosCurso)
 
         axios[metodo](url, dadosCurso)
         .then(resp => {
-            const lista = listaAtualizada(resp.data)
-            setLista1(lista)
+            let lista = listaAtualizada(resp.data)
+            //let lista = resp.data
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
-            console.log(dadosCurso)
+            setLista1(lista)
         })
         .catch(error => {
-            console.error(error)
-            setError(error)
-            setErrorTrue(true)
+            console.log(error)
         })
     }
-
-    const listaAtualizada = (curso, add = true) => {
-        const lista = lista1.filter(a => a.id !== curso.id)
-        console.log('lista' + lista)
-        if(add) lista.unshift(curso)
-        return lista
-    }
-
-    /*
-
-        getListaAtualizada(aluno, add = true) {
-        const lista = this.state.lista.filter(a => a.id !== aluno.id);
-        if (add) lista.unshift(aluno);
-        return lista;
-    }
-
-        salvar() {
-        const aluno = this.state.aluno;
-        aluno.codCurso = Number(aluno.codCurso);
-        const metodo = aluno.id ? 'put' : 'post';
-        const url = aluno.id ? `${urlAPI}/${aluno.id}` : urlAPI
-
-        axios[metodo](url, aluno)
-            .then(resp => {
-                const lista = this.getListaAtualizada(resp.data)
-                this.setState({ aluno: initialState.aluno, lista })
-            });
-
-    }
-
-    */
 
     const deletarAluno = async () => {
 
@@ -141,9 +112,9 @@ const Cursos = () => {
                     id="nome"
                     placeholder="Curso"
                     className="form-input"
-                    name="curso"
+                    name="nomeCurso"
 
-                value={cursoData.curso}
+                value={cursoData.nomeCurso}
                 onChange={dadosDosInputs}
                 />
                 <label> Periodo: </label>
