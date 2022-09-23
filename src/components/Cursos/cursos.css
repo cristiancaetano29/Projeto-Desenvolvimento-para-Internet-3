@@ -120,3 +120,7 @@ label {
     background-color: red;
     color: white;
 }
+
+.val-center{
+    text-align: center;
+}
