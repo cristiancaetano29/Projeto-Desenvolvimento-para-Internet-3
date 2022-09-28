@@ -10,12 +10,6 @@ const Cursos = () => {
     const [data, setData] = useState([])
     const [errorTrue, setErrorTrue] = useState(false)
     const [error, setError] = useState("")
-    const [lista1, setLista1] = useState({
-        id: 0,
-        codCurso: '',
-        nomeCurso: '',
-        periodo: '',
-    })
     const [cursoData, setCursoData] = useState({
         id: 0,
         codCurso: '',
@@ -42,16 +36,16 @@ const Cursos = () => {
             ...cursoData,
             [name]: value
         })
-        console.log(cursoData)
+        
     }
 
     function listaAtualizada(curso, add = true){
-        const lista = lista1.filter(a => a.id != curso.id)
+        const lista = cursoData.filter(a => a.id !== curso.id)
         if(add) lista.unshift(curso)
         return lista
     }
 
-    const adicioanrAluno = async () => {
+    const adicionarAluno = async () => {
         const dadosCurso = cursoData
         cursoData.codCurso = Number(dadosCurso.codCurso)
         const metodo = cursoData.id ? 'put' : 'post'
@@ -61,47 +55,48 @@ const Cursos = () => {
         .then(resp => {
             let lista = listaAtualizada(resp.data)
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
-            setLista1(lista)
+            setCursoData(lista)
         })
         .catch(error => {
             console.log(error)
         })
     }
 
-    /*
-    
-    remover(aluno) {
-        const url = urlAPI + "/" + aluno.id;
-        if (window.confirm("Confirma remoção do aluno: " + aluno.ra)) {
-            console.log("entrou no confirme da tela")
-
-            axios['delete'](url, aluno)
-                .then(resp => {
-                    const lista = this.getListaAtualizada(aluno, false)
-                    this.setState({ aluno: initialState.aluno, lista })
-                })
-        }
+    const atualizarCampo = async (e) => {
+        const curso = {...cursoData}
+        curso[e.target.name] = e.target.value
+        setCursoData = ({ curso })
     }
-    
-    */
 
-    const deletarCurso = async (curso) => {
+    const alterarDados = async (curso) => {
+        setCursoData({ curso })
         const url = urlAPI + "/" + curso.id
-        if(window.confirm("Deseja deletar o Curso: " + curso.codCurso)){
-            axios['delete'](url, curso)
-            .then(resp => {
-                let lista = listaAtualizada(resp.data)
-                cursoData({ dadosCurso: cursoData.dadosCurso, lista})
-                setLista1(lista)
+        if (window.confirm("Confirma edição do curso: " + curso.codCurso)) {
+            console.log("entrou no confirm do atualizar");
+            axios['PUT'](url, curso).then(resp => {
+                let lista = listaAtualizada(curso, false);
+                //setCursoData({ curso: cursoData.curso, lista });
+                setCursoData({ dadosCurso: cursoData.dadosCurso, lista})
             })
             .catch(error => {
                 console.log(error)
             })
         }
+        atualizarCampo(curso);
     }
 
-    const alterarAluno = async () => {
-
+    const deletarCurso = async (curso) => {
+        const url = urlAPI + "/" + curso.id
+        if(window.confirm("Deseja deletar o Curso: " + curso.codCurso)){
+            await axios['delete'](url, curso)
+            .then(resp => {
+                let lista = listaAtualizada(resp.data)
+                cursoData({ dadosCurso: cursoData.dadosCurso, lista})
+            })
+            .catch(error => {
+                console.log(error)
+            })
+        }
     }
 
     useEffect(() => {
@@ -155,12 +150,12 @@ const Cursos = () => {
                 onChange={dadosDosInputs}
                 />
                 <button className="btnSalvar"
-                onClick={adicioanrAluno} 
+                onClick={adicionarAluno} 
                 >
                     Salvar
                 </button>
                 <button className="btnCancelar"
-                //onClick={e => this.limpar(e)} 
+                //onClick={e => clear(e)} 
                 >
                     Cancelar
                 </button>
@@ -187,15 +182,14 @@ const Cursos = () => {
                                     <td className="val-center">{curso.periodo}</td>
                                     <td>
                                         <button className='btn-alterar'
-                                        //onClick={() => this.carregar(aluno)} className='btn-alterar'
+                                        onClick={() => alterarDados(curso)} 
                                         >
                                             Alterar
                                         </button>
                                     </td>
                                     <td>
                                         <button className='btn-remover'
-                                        //onClick={() => this.remover(aluno)} className='btn-remover'
-                                        >
+                                        onClick={() => deletarCurso(curso)}>
                                             Remover
                                         </button>
                                     </td>

@@ -11,13 +11,24 @@ const initialState = {
     lista: [],
 }
 
+const urlApiCursos = "http://localhost:5035/api/controller/cursos"
+const initialStateCurso = {
+    curso: { codCurso: '', id: 0, nomeCurso: '', periodo: '' },
+    listaCurso: [],
+}
+
 export default class CrudAluno extends Component {
 
-    state = { ...initialState }
+    state = { ...initialState, ...initialStateCurso }
 
     componentDidMount() {
         axios(urlAPI).then(resp => {
             this.setState({ lista: resp.data })
+        })
+
+        axios(urlApiCursos).then(resp => {
+            this.setState({ listaCurso: resp.data })
+            console.log(this.state.listaCurso)
         })
     }
 
@@ -35,6 +46,17 @@ export default class CrudAluno extends Component {
             .then(resp => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({ aluno: initialState.aluno, lista })
+            });
+
+        const curso = this.state.curso;
+        curso.codCurso = Number(aluno.codCurso);
+        const metodo2 = aluno.id ? 'put' : 'post';
+        const url2 = aluno.id ? `${urlApiCursos}/${curso.id}` : urlApiCursos
+
+        axios[metodo2](url2, curso)
+            .then(resp => {
+                const lista = this.getListaAtualizada(resp.data)
+                this.setState({ curso: initialStateCurso.curso, lista })
             });
 
     }
@@ -105,7 +127,7 @@ export default class CrudAluno extends Component {
                     onChange={e => this.atualizaCampo(e)}
                 />
                 <label> Código do Curso: </label>
-                <input
+                {/* <input
                     type="number"
                     id="codCurso"
                     placeholder="0"
@@ -114,7 +136,19 @@ export default class CrudAluno extends Component {
 
                     value={this.state.aluno.codCurso}
                     onChange={e => this.atualizaCampo(e)}
-                />
+                /> */}
+
+                <select>
+                    {this.state.listaCurso.map(
+                        (curso) => {
+                            <option key={curso.codCurso}>
+                                { curso.nomeCurso }
+                                - 
+                                { curso.periodo }
+                            </option>
+                })}
+                </select>
+                
                 <button className="btnSalvar"
                     onClick={e => this.salvar(e)} >
                     Salvar
