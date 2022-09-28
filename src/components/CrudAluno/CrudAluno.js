@@ -47,18 +47,6 @@ export default class CrudAluno extends Component {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({ aluno: initialState.aluno, lista })
             });
-
-        const curso = this.state.curso;
-        curso.codCurso = Number(aluno.codCurso);
-        const metodo2 = aluno.id ? 'put' : 'post';
-        const url2 = aluno.id ? `${urlApiCursos}/${curso.id}` : urlApiCursos
-
-        axios[metodo2](url2, curso)
-            .then(resp => {
-                const lista = this.getListaAtualizada(resp.data)
-                this.setState({ curso: initialStateCurso.curso, lista })
-            });
-
     }
 
     getListaAtualizada(aluno, add = true) {
@@ -71,6 +59,12 @@ export default class CrudAluno extends Component {
         const aluno = { ...this.state.aluno };
         aluno[evento.target.name] = evento.target.value
         this.setState({ aluno })
+    }
+
+    atualizaCurso(evento) {
+        const curso = { ...this.state.curso };
+        curso[evento.target.name] = evento.target.value
+        this.setState({ curso })
     }
 
     carregar(aluno) {
@@ -137,17 +131,16 @@ export default class CrudAluno extends Component {
                     value={this.state.aluno.codCurso}
                     onChange={e => this.atualizaCampo(e)}
                 /> */}
-
-                <select>
-                    {this.state.listaCurso.map(
-                        (curso) => {
-                            <option key={curso.codCurso}>
-                                { curso.nomeCurso }
-                                - 
-                                { curso.periodo }
-                            </option>
-                })}
-                </select>
+                    <select>
+                        {this.state.listaCurso.map(
+                            (curso) => 
+                                <option name="codCurso" onChange={e => this.atualizaCurso(e)} value={curso.codCurso}>
+                                    { curso.nomeCurso }
+                                    - 
+                                    { curso.periodo }
+                                </option>
+                    )}
+                    </select>
                 
                 <button className="btnSalvar"
                     onClick={e => this.salvar(e)} >
