@@ -16,6 +16,7 @@ const Cursos = () => {
         nomeCurso: '',
         periodo: '',
     })
+    const cursosClear = { id: 0, codCurso: '', nomeCurso: '', periodo: '', }
 
     const dataFromAPI = async () => {
         await axios(urlAPI)
@@ -60,29 +61,26 @@ const Cursos = () => {
         .catch(error => {
             console.log(error)
         })
+        if(metodo === 'put')
+            alert("Dados alterados com sucesso")
+        else
+            alert("Dados inseridos com sucesso")
+        clear()
     }
-
+    
+    /*
     const atualizarCampo = async (e) => {
         const curso = {...cursoData}
         curso[e.target.name] = e.target.value
         setCursoData = ({ curso })
-    }
+    }*/
 
     const alterarDados = async (curso) => {
-        setCursoData({ curso })
-        const url = urlAPI + "/" + curso.id
-        if (window.confirm("Confirma edição do curso: " + curso.codCurso)) {
-            console.log("entrou no confirm do atualizar");
-            axios['PUT'](url, curso).then(resp => {
-                let lista = listaAtualizada(curso, false);
-                //setCursoData({ curso: cursoData.curso, lista });
-                setCursoData({ dadosCurso: cursoData.dadosCurso, lista})
-            })
-            .catch(error => {
-                console.log(error)
-            })
-        }
-        atualizarCampo(curso);
+        await setCursoData(curso)
+    }
+
+    const clear = async () => {
+        setCursoData(cursosClear)
     }
 
     const deletarCurso = async (curso) => {
@@ -155,7 +153,7 @@ const Cursos = () => {
                     Salvar
                 </button>
                 <button className="btnCancelar"
-                //onClick={e => clear(e)} 
+                onClick={e => clear(e)} 
                 >
                     Cancelar
                 </button>

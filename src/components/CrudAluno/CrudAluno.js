@@ -13,7 +13,7 @@ const initialState = {
 
 const urlApiCursos = "http://localhost:5035/api/controller/cursos"
 const initialStateCurso = {
-    curso: { codCurso: '', id: 0, nomeCurso: '', periodo: '' },
+    curso: { codCurso: 0, id: 0, nomeCurso: '', periodo: '' },
     listaCurso: [],
 }
 
@@ -26,7 +26,7 @@ export default class CrudAluno extends Component {
             this.setState({ lista: resp.data })
         })
 
-        axios(urlApiCursos).then(resp => {
+        axios(urlApiCursos).then((resp) => {
             this.setState({ listaCurso: resp.data })
             console.log(this.state.listaCurso)
         })
@@ -43,7 +43,7 @@ export default class CrudAluno extends Component {
         const url = aluno.id ? `${urlAPI}/${aluno.id}` : urlAPI
 
         axios[metodo](url, aluno)
-            .then(resp => {
+            .then((resp) => {
                 const lista = this.getListaAtualizada(resp.data)
                 this.setState({ aluno: initialState.aluno, lista })
             });
@@ -106,7 +106,7 @@ export default class CrudAluno extends Component {
 
                     value={this.state.aluno.ra}
 
-                    onChange={e => this.atualizaCampo(e)}
+                    onChange={(e) => this.atualizaCampo(e)}
                 />
                 <label> Nome: </label>
                 <input
@@ -118,7 +118,7 @@ export default class CrudAluno extends Component {
 
                     value={this.state.aluno.nome}
 
-                    onChange={e => this.atualizaCampo(e)}
+                    onChange={(e) => this.atualizaCampo(e)}
                 />
                 <label> Código do Curso: </label>
                 {/* <input
@@ -131,23 +131,27 @@ export default class CrudAluno extends Component {
                     value={this.state.aluno.codCurso}
                     onChange={e => this.atualizaCampo(e)}
                 /> */}
-                    <select>
-                        {this.state.listaCurso.map(
-                            (curso) => 
-                                <option name="codCurso" onChange={e => this.atualizaCurso(e)} value={curso.codCurso}>
-                                    { curso.nomeCurso }
-                                    - 
-                                    { curso.periodo }
-                                </option>
+                    <select name="codCurso" onChange={e => { this.atualizaCurso(e)}}>
+                    {this.state.listaCurso.map(
+                        (curso) =>
+                             <option
+                                name="codCurso"
+                                value={curso.codCurso}
+                                >
+                                { curso.nomeCurso }
+                                -
+                                { curso.periodo }
+                            </option>
+
                     )}
-                    </select>
+                </select>
                 
                 <button className="btnSalvar"
-                    onClick={e => this.salvar(e)} >
+                    onClick={(e) => this.salvar(e)} >
                     Salvar
                 </button>
                 <button className="btnCancelar"
-                    onClick={e => this.limpar(e)} >
+                    onClick={(e) => this.limpar(e)} >
                     Cancelar
                 </button>
             </div>
