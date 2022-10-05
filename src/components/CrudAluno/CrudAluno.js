@@ -38,7 +38,7 @@ export default class CrudAluno extends Component {
 
     salvar() {
         const aluno = this.state.aluno;
-        aluno.codCurso = Number(aluno.codCurso);
+        aluno.codCurso = Number(this.state.curso.codCurso);
         const metodo = aluno.id ? 'put' : 'post';
         const url = aluno.id ? `${urlAPI}/${aluno.id}` : urlAPI
 
@@ -135,6 +135,7 @@ export default class CrudAluno extends Component {
                     {this.state.listaCurso.map(
                         (curso) =>
                              <option
+                                key={curso.id}
                                 name="codCurso"
                                 value={curso.codCurso}
                                 >
