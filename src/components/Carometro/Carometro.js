@@ -8,10 +8,11 @@ const Carometro = () => {
     const [dataAtualizada, setDataAtualizada] = useState(true)
     const avatar = ['adventurer', 'micah', 'personas', 'bottts', 'adventurer-neutral', 'avataaars','pixel-art']
     
-    function ramdomAvatar(){
-        let av = Math.floor(Math.random() * avatar.length)
+   function ramdomAvatar(){
+        let tamanho = avatar.length
+        let av = Math.floor(Math.random() * tamanho)
         let rd = avatar[av]
-        return rd;
+        return rd
     }
 
     function geraStringAleatoria(tamanho) {
@@ -35,11 +36,12 @@ const Carometro = () => {
                 console.error(error)
             })
     }
+    
 
     useEffect(() => {
         if (dataAtualizada) {
             dataFromAPI()
-            //setDataAtualizada(false)
+            setDataAtualizada(false)   
         }
     }, [dataAtualizada])
 

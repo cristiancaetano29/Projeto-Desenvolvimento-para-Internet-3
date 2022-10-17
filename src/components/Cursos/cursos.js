@@ -56,10 +56,10 @@ const Cursos = () => {
 
         axios[metodo](url, dadosCurso)
         .then(resp => {
-            setDataAtualizada(true)
             let lista = listaAtualizada(resp.data)
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
             setCursoData(lista)
+            setDataAtualizada(true)
         })
         .catch(error => {
             console.log(error)
@@ -80,6 +80,7 @@ const Cursos = () => {
 
     const alterarDados = async (curso) => {
         await setCursoData(curso)
+        setDataAtualizada(true)
     }
 
     const clear = async () => {
@@ -104,9 +105,7 @@ const Cursos = () => {
     useEffect(() => {
         if(dataAtualizada){
             dataFromAPI()
-            setTimeout(()=>{
-                setErrorTrue(false)
-            }, 4000)
+            setDataAtualizada(false)
         }
     }, [dataAtualizada])
 
