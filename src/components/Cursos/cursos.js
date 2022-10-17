@@ -7,6 +7,7 @@ import axios from "axios";
 const Cursos = () => {
     const title = "Cadastro de Cursos"
     const urlAPI = "http://localhost:5035/api/controller/cursos"
+    const [dataAtualizada, setDataAtualizada] = useState(true)
     const [data, setData] = useState([])
     const [errorTrue, setErrorTrue] = useState(false)
     const [error, setError] = useState("")
@@ -21,6 +22,7 @@ const Cursos = () => {
     const dataFromAPI = async () => {
         await axios(urlAPI)
             .then(resp => {
+                setDataAtualizada(true)
                 setData(resp.data)
             })
             .catch(error => {
@@ -54,6 +56,7 @@ const Cursos = () => {
 
         axios[metodo](url, dadosCurso)
         .then(resp => {
+            setDataAtualizada(true)
             let lista = listaAtualizada(resp.data)
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
             setCursoData(lista)
@@ -90,6 +93,7 @@ const Cursos = () => {
             .then(resp => {
                 let lista = listaAtualizada(resp.data)
                 cursoData({ dadosCurso: cursoData.dadosCurso, lista})
+                setDataAtualizada(true)
             })
             .catch(error => {
                 console.log(error)
@@ -98,11 +102,13 @@ const Cursos = () => {
     }
 
     useEffect(() => {
-        dataFromAPI()
-        setTimeout(()=>{
-            setErrorTrue(false)
-        }, 4000)
-    }, [data])
+        if(dataAtualizada){
+            dataFromAPI()
+            setTimeout(()=>{
+                setErrorTrue(false)
+            }, 4000)
+        }
+    }, [dataAtualizada])
 
 
     return (
