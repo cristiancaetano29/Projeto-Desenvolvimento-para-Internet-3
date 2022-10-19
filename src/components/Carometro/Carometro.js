@@ -88,19 +88,19 @@ const Carometro = () => {
         //     </main>
         // </>
         <div className="text-center duration-75 rounded-lg">
-            <div className="flex flex-wrap gap-5 w-screen items-center justify-between">
+            <div className="flex flex-wrap gap-5 w-screen items-center justify-between py-10 px-60 ">
                 {data.map((datas) => {
                     return (
-                            <div key={datas.id} className="flex flex-wrap p-5 shadow-2xl shadow-blue-700 w-screen h-[350px]">
+                            <div key={datas.id} className="flex flex-wrap p-5 shadow-2xl shadow-blue-700 h-[370px]">
                                 <div className="">
                                 <div className="">
-                                    <div className="w-9/12 items-center self-center place-items-center">
+                                    <div className="w-12/12 items-center self-center place-items-center">
                                         <img src={imgURL()} alt={datas.nome} className="" loading="lazy" />
                                     </div>
                                 </div>
 
                                 <div className="flex flex-col flex-wrap w-[180px] pt-5 gap-3 text-left">
-                                    <span className="text-teal-500 font-medium">{datas.nome}</span>
+                                    <span className="text-teal-500 text-xl font-medium">{datas.nome}</span>
                                     <span className="font-medium">RA: {datas.ra}</span>
                                     <span className="">Curso: {datas.ra}</span>
                                 </div>
