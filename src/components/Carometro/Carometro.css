@@ -1,5 +1,21 @@
-.card{
-    display: grid;
+.cards {
+    text-align: center;
+    transition: 0.3s;
+    border-radius: 5px; /* 5px rounded corners */
+}
+.cards .content{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
     align-items: center;
-    justify-items: center;
+    justify-content: space-between;
+}
+.card-content{
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+.cards img{
+    border-radius: 5px 5px 0 0;
+    width: 50%;
 }
