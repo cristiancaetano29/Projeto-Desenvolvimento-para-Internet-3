@@ -57,9 +57,9 @@ const Cursos = () => {
         axios[metodo](url, dadosCurso)
         .then(resp => {
             let lista = listaAtualizada(resp.data)
+            setDataAtualizada(true)
             cursoData({ dadosCurso: cursoData.dadosCurso, lista})
             setCursoData(lista)
-            setDataAtualizada(true)
         })
         .catch(error => {
             console.log(error)
@@ -85,6 +85,7 @@ const Cursos = () => {
 
     const clear = async () => {
         setCursoData(cursosClear)
+        setDataAtualizada(true)
     }
 
     const deletarCurso = async (curso) => {
@@ -93,8 +94,8 @@ const Cursos = () => {
             await axios['delete'](url, curso)
             .then(resp => {
                 let lista = listaAtualizada(resp.data)
-                cursoData({ dadosCurso: cursoData.dadosCurso, lista})
                 setDataAtualizada(true)
+                cursoData({ dadosCurso: cursoData.dadosCurso, lista})
             })
             .catch(error => {
                 console.log(error)

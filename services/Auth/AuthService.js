@@ -20,7 +20,7 @@ const UrlLogin = "localhost:5035/api/Login/"
     }
 
     const getCurrentUser = () => {
-        return JSON.parse(localStorage.getItem("User"))
+        return JSON.parse(localStorage.getItem("U"))
     }
 
     const AuthService = {
