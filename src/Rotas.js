@@ -2,7 +2,8 @@ import React from "react";
 import { Routes, Route,  } from "react-router-dom";
 import Main from "./components/template/main/Main";
 import CrudAluno from "./components/CrudAluno/CrudAluno";
-import Cursos from "./components/Cursos/Cursos";
+//import Cursos from "./components/Cursos/Cursos";
+import Cursos from "./components/Cursos/cursos";
 import Carometro from "./components/Carometro/Carometro";
 import Imagem from "./components/Imagem/imagem";
 
