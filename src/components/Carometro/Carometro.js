@@ -1,36 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-//import './Carometro.css';
 
 const Carometro = () => {
-
     const urlApiAlunos = "http://localhost:5035/api/controller"
     const urlAPICursos = "http://localhost:5035/api/controller/cursos"
-    /*
-    const [data, setData] = useState([])
-    const [cursos, setCursos] = useState([])
-    const [cursoData, setCursoData] = useState({
-        id: 0,
-        codCurso: '',
-        nomeCurso: '',
-        periodo: '',
-    })
-    const [alunosData, setAlunosData] = useState({
-        aluno: {id: 0, ra: '', nome: '', codCurso: 0},
-    })
-*/
     const [dataAtualizada, setDataAtualizada] = useState(true)
-    const initialState = {
-        aluno: { id: 0, ra: '', nome: '', codCurso: 0 },
-        curso: { id: 0, codCurso: "", nomeCurso: "", periodo: "" },
-        listaAlunos: [],
-        listaCursos: [],
-    }
-
-    //const [listaCursos, setListaCursos] = useState(initialState.listaCursos);
-    const [listaAlunos, setListaAlunos] = useState(initialState.listaAlunos);
-    const [curso, setCurso] = useState(initialState.curso);
-
     const [vetCurso, setVetCurso] = useState([])
     const [vetAluno, setVetAluno] = useState([])
 
